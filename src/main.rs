@@ -55,12 +55,12 @@ fn main() {
         let log = File::open(fah_log).unwrap();
         let mut rev_lines = RevLines::new(BufReader::new(log)).unwrap();
     
-        let status = &rev_lines.next().unwrap()[9..16];
+        let status = &rev_lines.next().unwrap();
 
         let now: DateTime<Utc> = Utc::now();
     
-        if status == "ERROR:W" || status == "WARNING"{
-            process::Command::new(fah_script).arg("restart").output().ok().expect("出错!");
+        if status.contains("ERROR") || status.contains("WARNING"){
+            process::Command::new(fah_script).arg("reload").output().ok().expect("出错!");
             println!("{} 重启", now);
         } else {
             println!("{} 不用重启", now);
