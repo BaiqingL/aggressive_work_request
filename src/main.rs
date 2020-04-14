@@ -45,7 +45,7 @@ fn main() {
         println!("F@H 控制脚本: {} \nF@H 日志地址: {}\n无WU等待时间: {}分钟", fah_script, fah_log, default_wait);
     } else {
         println!("使用默认参数");
-        println!("F@H 控制脚本: {} \nF@H 日志地址: {}", fah_script, fah_log);
+        println!("F@H 控制脚本: {} \nF@H 日志地址: {}\n无WU等待时间: {}分钟", fah_script, fah_log, default_wait);
     }
 
     println!("开始检查");
