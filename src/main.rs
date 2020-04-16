@@ -34,7 +34,7 @@ fn main() {
     let download_timeout: i64 = conf.section(Some("settings")).unwrap().get("Downloadtimeout").unwrap().parse().unwrap();
     let reload_limit: i32 = conf.section(Some("settings")).unwrap().get("ReloadThreshold").unwrap().parse().unwrap();
     let sleep_interval: u64 = conf.section(Some("settings")).unwrap().get("SleepInterval").unwrap().parse().unwrap();
-    println!("FAHControl Location: {}\nLog Location: {}", control_location, log_location);
+    println!("使用一下参数：\nFAHControl 脚本位置: {}\n日志位置: {}", control_location, log_location);
     println!("开始检查");
 
     loop {
@@ -60,12 +60,12 @@ fn main() {
                         unworking_slots += 1;
                     }
                 } else if state == 5 {
-                    println!("{} Slot {} does not exist", Utc::now(), slot);
+                    println!("[警告] {} {} 不存在，请修改设置重启", Utc::now(), slot);
                 }
             }
             if unworking_slots == reload_limit {
                 process::Command::new(&control_location).arg("reload").output().ok().expect("出错!");
-                println!("{} 重启", Utc::now());
+                println!("[提示] {} 重启", Utc::now());
                 unworking_slots = 0;
             }
         }
@@ -144,12 +144,12 @@ fn find_state_gap(first_pattern: &str,second_pattern: &str, log_location: &str, 
 }
 
 /*
-States
-1: Working / Misc
-2: Uploading
-3: Downloading
-4: Idle
-5: No such slot
+状态
+1: 工作/其它
+2: 上传
+3: 下载
+4: 待机
+5: 不存在FSXX
 */
 fn find_slot_state(slot: &str, log_location: &str) -> i32 {
     let log = File::open(log_location).unwrap();
