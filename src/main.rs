@@ -8,11 +8,9 @@ use ini::Ini;
 use nix::unistd;
 use rev_lines::RevLines;
 use std::collections::LinkedList;
-use std::env;
 use std::fs::File;
 use std::io::BufReader;
-use std::process;
-use std::{thread, time};
+use std::{thread, time, process, env};
 
 fn main() {
     let uid = unistd::getuid();
