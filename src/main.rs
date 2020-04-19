@@ -1,10 +1,11 @@
 extern crate chrono;
 extern crate ini;
-extern crate libc;
+extern crate nix;
 extern crate rev_lines;
 
 use chrono::Utc;
 use ini::Ini;
+use nix::unistd;
 use rev_lines::RevLines;
 use std::collections::LinkedList;
 use std::env;
@@ -14,14 +15,12 @@ use std::process;
 use std::{thread, time};
 
 fn main() {
-    unsafe {
-        let _uid = libc::getuid();
+    let uid = unistd::getuid();
 
-        if _uid == 0 {
-            println!("拥有root权限");
-        } else {
-            println!("没有root权限,可能会出现文件权限阅读问题");
-        }
+    if uid.is_root() {
+        println!("拥有root权限");
+    } else {
+        println!("没有root权限,可能会出现文件权限阅读问题");
     }
 
     let args: Vec<String> = env::args().collect();
